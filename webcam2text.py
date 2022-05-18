@@ -11,6 +11,7 @@ import pytesseract
 import imutils
 import time
 import cv2
+import detection
 
 pytesseract.pytesseract.tesseract_cmd = r'C:\Users\ihyun\Desktop\tesseract\tesseract.exe'
 
@@ -190,45 +191,64 @@ while True:
 
 		#if text in items:
 			#while True:
+				#detector = Detection(capture_index=0, model_name='yolov5s')
+			'''
+				cap = self.get_video_capture()
+				assert cap.isOpened()
+				while True:
+					ret, frame = cap.read()
+					assert ret
+					
+					frame = cv2.resize(frame, (416,416))
+					
+					start_time = time()
+					results = self.score_frame(frame)
+					try:
+						frame, x1, y1, x2, y2, poo = self.plot_boxes(results, frame)
+						cntr = [x1+x2/2, y1+y2/2]
+						print(cntr, poo)
+						if poo == text:
+							while cntr - camera center point > threshold or cntr - camera center point < threshold or:
+							while cntr - camera center point > threshold:
+								steer left
+							while cntr - camera center point < threshold:
+								steer right
+						while lidar value > threshold:
+							Thorttle forward
+						Move servo motor to grab item
+						while basket != on screen:
+							steer left
+						while basket center point - camera center point > threshold or basket center point - camera center point < threshold or:
+							while basket center point - camera center point > threshold:
+								steer left
+							while basket center point - camera center point < threshold:
+								steer right
+						while lidar value > threshold:
+							Thorttle forward
+						release item
+						break
+					except:
+						frame = self.plot_boxes(results, frame)
+				
+					
+					end_time = time()
+					fps = 1/np.round(end_time - start_time, 2)
+					#print(f"Frames Per Second : {fps}")
+					
+					cv2.putText(frame, f'FPS: {int(fps)}', (20,70), cv2.FONT_HERSHEY_SIMPLEX, 1.5, (0,255,0), 2)
+					
+					cv2.imshow('YOLOv5 Detection', frame)
+		
+					if cv2.waitKey(5) & 0xFF == 27:
+						break
+			
+				cap.release()
+				'''
 				#Steer left until object detected is on screen
 				#if object detected:
 					#break
 			#Use YOLO to detect the item that we detected
-			#while item center point - camera center point > threshold or item center point - camera center point < threshold or:
-				#while item center point - camera center point > threshold:
-					#steer left
-				#while item center point - camera center point < threshold:
-					#steer right
-			#while lidar value > threshold:
-				#Thorttle forward
-			#Move servo motor to grab item
-			#while basket != on screen:
-				#steer left
-			#while basket center point - camera center point > threshold or basket center point - camera center point < threshold or:
-				#while basket center point - camera center point > threshold:
-					#steer left
-				#while basket center point - camera center point < threshold:
-					#steer right
-			#while lidar value > threshold:
-				#Thorttle forward
-			#release item
-			#break
-		'''
-		# strip out non-ASCII text so we can draw the text on the image
-		# using OpenCV, then draw the text and a bounding box surrounding
-		# the text region of the input image
-			text = "".join([c if ord(c) < 128 else "" for c in text]).strip()
-			output = orig.copy()
-			cv2.rectangle(output, (startX, startY), (endX, endY),
-				(0, 0, 255), 2)
-			cv2.putText(output, text, (startX, startY - 20),
-				cv2.FONT_HERSHEY_SIMPLEX, 1.2, (0, 0, 255), 3)
-
-			# show the output image
-			cv2.imshow("Text Detection", output)
-			cv2.waitKey(0)
-		'''
-
+			
 		
 		#cv2.imshow("",orig[startX:endX+1,startY:endY+1])z
 
