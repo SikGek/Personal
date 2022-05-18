@@ -97,7 +97,7 @@ layerNames = [
 print("[INFO] loading EAST text detector...")
 net = cv2.dnn.readNet(args["east"])
 
-
+items = ["apple", "deez", "nuts", "lmao"]
 
 # if a video path was not supplied, grab the reference to the web cam
 if not args.get("video", False):
@@ -174,7 +174,7 @@ while True:
 		# wish to use the LSTM neural net model for OCR, and finally
 		# (3) an OEM value, in this case, 7 which implies that we are
 		# treating the ROI as a single line of text
-		config = ("-l eng --oem 1 --psm 7")
+		config = ("-l eng --oem 3 --psm 7")
 		text = pytesseract.image_to_string(roi, config=config)
 
 	# add the bounding box coordinates and OCR'd text to the list
@@ -186,8 +186,34 @@ while True:
 		# display the text OCR'd by Tesseract
 			print("OCR TEXT")
 			print("========")
-			print("{}\n".format(text))
+			print(text)
 
+		#if text in items:
+			#while True:
+				#Steer left until object detected is on screen
+				#if object detected:
+					#break
+			#Use YOLO to detect the item that we detected
+			#while item center point - camera center point > threshold or item center point - camera center point < threshold or:
+				#while item center point - camera center point > threshold:
+					#steer left
+				#while item center point - camera center point < threshold:
+					#steer right
+			#while lidar value > threshold:
+				#Thorttle forward
+			#Move servo motor to grab item
+			#while basket != on screen:
+				#steer left
+			#while basket center point - camera center point > threshold or basket center point - camera center point < threshold or:
+				#while basket center point - camera center point > threshold:
+					#steer left
+				#while basket center point - camera center point < threshold:
+					#steer right
+			#while lidar value > threshold:
+				#Thorttle forward
+			#release item
+			#break
+		'''
 		# strip out non-ASCII text so we can draw the text on the image
 		# using OpenCV, then draw the text and a bounding box surrounding
 		# the text region of the input image
@@ -201,7 +227,7 @@ while True:
 			# show the output image
 			cv2.imshow("Text Detection", output)
 			cv2.waitKey(0)
-
+		'''
 
 		
 		#cv2.imshow("",orig[startX:endX+1,startY:endY+1])z
