@@ -34,7 +34,7 @@ class OBJ_DETECTION():
                 try:
                     label = self.classes[int(p[5])]
                 except:
-                    label = self.classes[int(p[4])]
+                    continue
                 xmin = int(p[0] * main_img.shape[1] /self.input_width)
                 ymin = int(p[1] * main_img.shape[0] /new_height)
                 xmax = int(p[2] * main_img.shape[1] /self.input_width)

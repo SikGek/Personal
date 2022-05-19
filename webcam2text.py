@@ -15,11 +15,6 @@ from elements.yolo import OBJ_DETECTION
 
 pytesseract.pytesseract.tesseract_cmd = r'C:\Users\ihyun\Desktop\tesseract\tesseract.exe'
 
-Object_classes = ['person']
-
-Object_colors = list(np.random.rand(80,3)*255)
-Object_detector = OBJ_DETECTION('weights/yolov5s1.pt', Object_classes)
-
 def decode_predictions(scores, geometry):
 
 	(numRows, numCols) = scores.shape[2:4]
@@ -120,8 +115,7 @@ while True:
 
 	frame = cv2.resize(frame, (newW, newH))
 
-	blob = cv2.dnn.blobFromImage(frame, 1.0, (newW, newH),
-		(123.68, 116.78, 103.94), swapRB=True, crop=False)
+	blob = cv2.dnn.blobFromImage(frame, 1.0, (newW, newH), (123.68, 116.78, 103.94), swapRB=True, crop=False)
 	net.setInput(blob)
 	(scores, geometry) = net.forward(layerNames)
 
@@ -189,6 +183,13 @@ else:
 
 cv2.destroyAllWindows()
 
+#Object_classes = [text]
+Object_classes = ['person']
+
+Object_colors = list(np.random.rand(80,3)*255)
+
+Object_detector = OBJ_DETECTION('weights/yolov5s1.pt', Object_classes)
+
 cap = cv2.VideoCapture(0)
 window_handle = cv2.namedWindow("CSI Camera", cv2.WINDOW_AUTOSIZE)
 # Window
@@ -208,7 +209,7 @@ while cv2.getWindowProperty("CSI Camera", 0) >= 0:
 			frame = cv2.rectangle(frame, (xmin,ymin), (xmax,ymax), color, 2) 
 			frame = cv2.putText(frame, f'{label} ({str(score)})', (xmin,ymin), cv2.FONT_HERSHEY_SIMPLEX , 0.75, color, 1, cv2.LINE_AA)
 			cntr = [xmin+xmax/2,ymin+ymax/2]
-			print(label, cntr)
+			print(label, cntr, text)
 
 	cv2.imshow("CSI Camera", frame)
 	keyCode = cv2.waitKey(30)
