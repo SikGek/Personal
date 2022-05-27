@@ -44,7 +44,6 @@ class OBJ_DETECTION():
                         'bbox' : [(xmin,ymin),(xmax,ymax)],
                         'score': score
                         }
-
                 items.append(item)
 
         return items

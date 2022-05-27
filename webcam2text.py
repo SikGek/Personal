@@ -13,7 +13,7 @@ import time
 import cv2
 from elements.yolo import OBJ_DETECTION
 
-pytesseract.pytesseract.tesseract_cmd = r'C:\Users\ihyun\Desktop\tesseract\tesseract.exe'
+#pytesseract.pytesseract.tesseract_cmd = r'C:\Users\ihyun\Desktop\tesseract\tesseract.exe'
 
 def decode_predictions(scores, geometry):
 
@@ -83,16 +83,16 @@ layerNames = [
 print("[INFO] loading EAST text detector...")
 net = cv2.dnn.readNet(args["east"])
 
-items = ["apple", "deez", "nuts", "lmao", "Activate", "Windows"]
+items = ["apple", "deez", "nuts", "lmao", "Activate", "Windows", "Person", 'person', 'PERSON']
 
 
 if not args.get("video", False):
 	print("[INFO] starting video stream...")
-	vs = VideoStream(src=0).start()
+	vs = VideoStream(src=4).start()
 	time.sleep(1.0)
 
 else:
-	vs = cv2.VideoCapture(0)
+	vs = cv2.VideoCapture(4)
 
 fps = FPS().start()
 
@@ -175,43 +175,46 @@ fps.stop()
 print("[INFO] elasped time: {:.2f}".format(fps.elapsed()))
 print("[INFO] approx. FPS: {:.2f}".format(fps.fps()))
 
-if not args.get("video", False):
+'''if not args.get("video", False):
 	vs.stop()
 
 else:
-	vs.release()
+	vs.release()'''
 
 cv2.destroyAllWindows()
 
-#Object_classes = [text]
-Object_classes = ['person']
+Object_classes = [text]
+#Object_classes = ['person']
 
 Object_colors = list(np.random.rand(80,3)*255)
 
 Object_detector = OBJ_DETECTION('weights/yolov5s1.pt', Object_classes)
 
-cap = cv2.VideoCapture(0)
-window_handle = cv2.namedWindow("CSI Camera", cv2.WINDOW_AUTOSIZE)
+#cap = cv2.VideoCapture(4)
+#window_handle = cv2.namedWindow("CSI Camera", cv2.WINDOW_AUTOSIZE)
 # Window
-while cv2.getWindowProperty("CSI Camera", 0) >= 0:
-	ret, frame = cap.read()
-	if ret:
-		# detection process
-		objs = Object_detector.detect(frame)
 
-		# plotting
-		for obj in objs:
-			# print(obj)
-			label = obj['label']
-			score = obj['score']
-			[(xmin,ymin),(xmax,ymax)] = obj['bbox']
-			color = Object_colors[Object_classes.index(label)]
-			frame = cv2.rectangle(frame, (xmin,ymin), (xmax,ymax), color, 2) 
-			frame = cv2.putText(frame, f'{label} ({str(score)})', (xmin,ymin), cv2.FONT_HERSHEY_SIMPLEX , 0.75, color, 1, cv2.LINE_AA)
-			cntr = [xmin+xmax/2,ymin+ymax/2]
-			print(label, cntr, text)
-
+#window_handle = cv2.namedWindow("CSI Camera", cv2.WINDOW_AUTOSIZE)
+# Window
+while True:
+	frame = vs.read()
+	# detection process
+	objs = Object_detector.detect(frame)
 	cv2.imshow("CSI Camera", frame)
+	# plotting
+	for obj in objs:
+		# print(obj)
+		label = obj['label']
+		score = obj['score']
+		[(xmin,ymin),(xmax,ymax)] = obj['bbox']
+		color = Object_colors[Object_classes.index(label)]
+		frame = cv2.rectangle(frame, (xmin,ymin), (xmax,ymax), color, 2) 
+		frame = cv2.putText(frame, f'{label} ({str(score)})', (xmin,ymin), cv2.FONT_HERSHEY_SIMPLEX , 0.75, color, 1, cv2.LINE_AA)
+		cntr = [xmin+xmax/2,ymin+ymax/2]
+		print(label, cntr, text)
+	
+	cv2.imshow("CSI Camera", frame)
+
 	keyCode = cv2.waitKey(30)
 	if keyCode == ord('q'):
 		break
@@ -264,5 +267,5 @@ while cv2.getWindowProperty("CSI Camera", 0) >= 0:
 	#if object detected:
 		#break
 #Use YOLO to detect the item that we detected
-cap.release()
+vs.stop()
 cv2.destroyAllWindows()
