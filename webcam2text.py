@@ -12,7 +12,9 @@ import imutils
 import time
 import cv2
 from elements.yolo import OBJ_DETECTION
+from actuator import VESC
 
+vesc = VESC('/dev/ttyACM0')
 #pytesseract.pytesseract.tesseract_cmd = r'C:\Users\ihyun\Desktop\tesseract\tesseract.exe'
 
 def decode_predictions(scores, geometry):
@@ -184,22 +186,6 @@ else:
 cv2.destroyAllWindows()
 #print(text)
 
-'''from donkeycar.parts.actuator import VESC
-VESC_SERIAL_PORT = '/dev/ttyACM0'
-VESC_MAX_SPEED_PERCENT = 0.2
-VESC_HAS_SENSOR = False
-VESC_START_HEARTBEAT= True
-VESC_BAUDRATE= 115200
-VESC_TIMEOUT= 0.05
-DONKEY_GYM = False
-#logger.info("Creating VESC at port {}".format(cfg.VESC_SERIAL_PORT))
-vesc = VESC(cfg.VESC_SERIAL_PORT,
-	cfg.VESC_MAX_SPEED_PERCENT,
-	cfg.VESC_HAS_SENSOR,
-	cfg.VESC_START_HEARTBEAT,
-	cfg.VESC_BAUDRATE, 
-	cfg.VESC_TIMEOUT
-)'''
 Object_classes = [text]
 #Object_classes = ['person']
 
@@ -219,6 +205,7 @@ while True:
 	objs = Object_detector.detect(frame)
 	cv2.imshow("CSI Camera", frame)
 	# plotting
+	cntr = 0
 	for obj in objs:
 		# print(obj)
 		label = obj['label']
@@ -229,7 +216,6 @@ while True:
 		frame = cv2.putText(frame, f'{label} ({str(score)})', (xmin,ymin), cv2.FONT_HERSHEY_SIMPLEX , 0.75, color, 1, cv2.LINE_AA)
 		cntr = [xmin+xmax/2,ymin+ymax/2]
 		print(label, cntr, text)
-	
 	cv2.imshow("CSI Camera", frame)
 
 	keyCode = cv2.waitKey(30)
