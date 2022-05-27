@@ -83,7 +83,7 @@ layerNames = [
 print("[INFO] loading EAST text detector...")
 net = cv2.dnn.readNet(args["east"])
 
-items = ["apple", "deez", "nuts", "lmao", "Activate", "Windows", "Person", 'person', 'PERSON']
+items = ["apple", 'banana', 'orange', "Person", 'person', 'PERSON']
 
 
 if not args.get("video", False):
@@ -182,7 +182,24 @@ else:
 	vs.release()'''
 
 cv2.destroyAllWindows()
+#print(text)
 
+'''from donkeycar.parts.actuator import VESC
+VESC_SERIAL_PORT = '/dev/ttyACM0'
+VESC_MAX_SPEED_PERCENT = 0.2
+VESC_HAS_SENSOR = False
+VESC_START_HEARTBEAT= True
+VESC_BAUDRATE= 115200
+VESC_TIMEOUT= 0.05
+DONKEY_GYM = False
+#logger.info("Creating VESC at port {}".format(cfg.VESC_SERIAL_PORT))
+vesc = VESC(cfg.VESC_SERIAL_PORT,
+	cfg.VESC_MAX_SPEED_PERCENT,
+	cfg.VESC_HAS_SENSOR,
+	cfg.VESC_START_HEARTBEAT,
+	cfg.VESC_BAUDRATE, 
+	cfg.VESC_TIMEOUT
+)'''
 Object_classes = [text]
 #Object_classes = ['person']
 

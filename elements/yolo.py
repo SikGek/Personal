@@ -25,14 +25,19 @@ class OBJ_DETECTION():
             img = img.unsqueeze(0)
 
         pred = self.yolo_model(img, augment=False)[0]
-        pred = non_max_suppression(pred, conf_thres=0.25, iou_thres=0.45, classes=None)
+        pred = non_max_suppression(pred, conf_thres=0.50, iou_thres=0.50, classes=None)
         items = []
         
         if pred[0] is not None and len(pred):
             for p in pred[0]:
                 score = np.round(p[4].cpu().detach().numpy(),2)
                 try:
-                    label = self.classes[int(p[5])]
+                    if 'banana' in self.classes:
+                        label = self.classes[int(p[5])-47]
+                    elif 'apple' in self.classes:
+                        label = self.classes[int(p[5])-48]
+                    elif 'orange' in self.classes:
+                        label = self.classes[int(p[5])-50]
                 except:
                     continue
                 xmin = int(p[0] * main_img.shape[1] /self.input_width)
